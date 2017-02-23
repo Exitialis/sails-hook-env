@@ -14,5 +14,23 @@ describe('enviroment loader', () => {
         expect(sails.config.models.connection).to.equal('mysql');
     });
 
-    it('should set connection adapter from')
+    it('should set connection adapter from .env file', () => {
+        expect(sails.config.connections.mysql.adapter).to.equal('sails-mysql');
+    });
+
+    it('should set connection host from .env file', () => {
+        expect(sails.config.connections.mysql.host).to.equal('localhost');
+    });
+
+    it('should set connection user from .env file', () => {
+        expect(sails.config.connections.mysql.user).to.equal('root');
+    });
+
+    it('should set connection password from .env file', () => {
+        expect(sails.config.connections.mysql.password).to.equal('root');
+    });
+
+    it('should set connection database name from .env file', () => {
+        expect(sails.config.connections.mysql.database).to.equal('test');
+    });
 });
