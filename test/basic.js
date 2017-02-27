@@ -1,9 +1,9 @@
-var Sails = require('sails').Sails;
+let Sails = require('sails').Sails;
 
  describe('Basic tests ::', function() {
 
      // Var to hold a running sails app instance
-     var sails;
+     let sails;
 
      // Before running any tests, attempt to lift Sails
      before(function (done) {
@@ -22,6 +22,7 @@ var Sails = require('sails').Sails;
            log: {level: "error"}
          },function (err, _sails) {
            if (err) return done(err);
+           global.sails = _sails;
            sails = _sails;
            return done();
          });
