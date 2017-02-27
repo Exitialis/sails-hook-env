@@ -8,11 +8,9 @@ describe('enviroment loader', () => {
 
     it('should create additional connection with name in  DB_CONNECTION variable', () => {
         expect(sails.config.connections.mysql).to.not.null;
-    })
+    });
 
     it('should change connection name for sails model configrutaion', () => {
         expect(sails.config.models.connection).to.equal('mysql');
     });
-
-    it('should set connection adapter from')
 });

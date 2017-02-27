@@ -1,40 +1,38 @@
 const dotenv = require('dotenv');
 
 module.exports = function (sails) {
-  return {
-    defaults: {
-      __configKey__: {
-        connections: {
-          adapter: 'DB_ADAPTER',
-          host: 'DB_HOST',
-          user: 'DB_USER',
-          password: 'DB_PASSWORD',
-          database: 'DB_NAME'
+    return {
+        defaults: {
+            __configKey__: {
+                datastores: {
+                    adapter: 'DB_ADAPTER',
+                    url: 'DB_URL'
+                }
+            },
         },
-        models: {
-          connection: 'DB_CONNECTION'
+
+        initialize(cb) {
+            dotenv.load();
+            const configKey = this.configKey;
+
+            if (sails.hooks.orm) {
+                let adapter = process.env[sails.config[configKey].datastores.adapter];
+                let connectionUrl = process.env[sails.config[configKey].datastores.url];
+
+                if (!sails.config.datastores) {
+                    sails.config.datastores = {
+                        default: {
+                            adapter: adapter,
+                            url: connectionUrl
+                        }
+                    }
+                } else {
+                    sails.config.datastores.default.adapter = adapter;
+                    sails.config.datastores.default.url = connectionUrl;
+                }
+            }
+
+            return cb();
         }
-      },
-    },
-
-    initialize(cb) {
-      dotenv.load();
-      const configKey = this.configKey;
-
-      let connectionName = process.env[sails.config[configKey].models.connection];
-      let connectionsOpts = sails.config[configKey].connections;
-
-      for(let prop in connectionsOpts) {
-        let envName = connectionsOpts[prop];
-
-        connectionsOpts[prop] = process.env[envName]
-      }
-
-      sails.config.connections[connectionName] = connectionsOpts;
-
-      sails.config.models.connection = connectionName;
-
-      return cb();
     }
-  }
 }
